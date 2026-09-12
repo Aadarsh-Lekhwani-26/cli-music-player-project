@@ -3,7 +3,7 @@ const path = require("path");
 
 function loadSongs() {
     try {
-        const songsFolder = path.join(__dirname, "..", "songs");
+        const songsFolder = path.join(__dirname, "songs");
 
         const files = fs.readdirSync(songsFolder);
 
@@ -17,5 +17,3 @@ function loadSongs() {
         return [];
     }
 }
-
-module.exports = loadSongs;
