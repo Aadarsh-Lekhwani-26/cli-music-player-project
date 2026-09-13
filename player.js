@@ -1,5 +1,10 @@
+const mm = require("music-metadata");
 const MPV = require("node-mpv");
 const path = require("path");
+
+let currentDuration = 0;
+let currentPosition = 0;
+let progressTimer = null;
 
 let mpvPlayer = new MPV({
     audio_only: true,
@@ -24,16 +29,47 @@ async function playSong(songName) {
             songName
         );
 
-        console.log("STOPPING OLD SONG...");
+        // Stop old song
         await mpvPlayer.stop();
 
-        console.log("LOADING:", songPath);
+        // Clear old timer
+        clearInterval(progressTimer);
+        progressTimer = null;
 
+        // Get duration
+        const metadata =
+            await mm.parseFile(songPath);
+
+        currentDuration =
+            metadata.format.duration || 0;
+
+        currentPosition = 0;
+
+        // Play song
         await mpvPlayer.loadFile(songPath);
 
         currentSong = songName;
 
         console.log(`Now Playing: ${songName}`);
+
+        console.log(
+            `Duration: ${formatTime(currentDuration)}`
+        );
+
+        // Start progress timer
+        progressTimer = setInterval(() => {
+
+            currentPosition++;
+
+            process.stdout.write(
+                `\rProgress: ${formatTime(
+                    currentPosition
+                )} / ${formatTime(
+                    currentDuration
+                )}`
+            );
+
+        }, 1000);
 
     } catch (error) {
         console.error(
@@ -50,11 +86,20 @@ function getCurrentSong() {
 
 async function stopSong() {
     try {
+
+        clearInterval(progressTimer);
+        progressTimer = null;
+
+        currentPosition = 0;
+
         await mpvPlayer.stop();
 
         currentSong = null;
 
-        console.log("\nPlayback Stopped");
+        console.log(
+            "\nPlayback Stopped"
+        );
+
     } catch (error) {
         console.error(
             "Stop Error:",
@@ -96,6 +141,32 @@ async function resumeSong() {
             error.message
         );
     }
+}
+
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+
+    return `${mins}:${secs
+        .toString()
+        .padStart(2, "0")}`;
+}
+
+function getProgressBar() {
+    if (!currentDuration) {
+        return "";
+    }
+
+    const totalBars = 20;
+
+    const filledBars = Math.floor(
+        (currentPosition / currentDuration)
+        * totalBars
+    );
+
+    return `[${"#".repeat(filledBars)}${"-".repeat(
+        totalBars - filledBars
+    )}] ${formatTime(currentPosition)} / ${formatTime(currentDuration)}`;
 }
 
 module.exports = {
