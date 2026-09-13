@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "node-mpv": "^1.5.0"
+  },
+  "name": "cli-music-player-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aadarsh-Lekhwani-26/cli-music-player-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Aadarsh-Lekhwani-26/cli-music-player-project/issues"
+  },
+  "homepage": "https://github.com/Aadarsh-Lekhwani-26/cli-music-player-project#readme"
+}

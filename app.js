@@ -1,5 +1,11 @@
 const loadSongs = require("./songLoader");
 const displaySongs = require("./ui");
+const {
+    playSong,
+    stopSong,
+    getCurrentSong,
+    quitPlayer
+} = require("./player");
 
 const songs = loadSongs();
 
@@ -11,16 +17,19 @@ process.stdin.setRawMode(true);
 process.stdin.resume();
 process.stdin.setEncoding("utf8");
 
-process.stdin.on("data", (key) => {
+process.stdin.on("data", async (key) => {
     if (songs.length === 0) {
         return;
     }
+
+    let shouldRedraw = false;
 
     switch (key) {
         case "\u001b[A": // Up Arrow
 
             if (selectedSongIndex > 0) {
                 selectedSongIndex--;
+                shouldRedraw = true;
             }
 
             break;
@@ -29,18 +38,45 @@ process.stdin.on("data", (key) => {
 
             if (selectedSongIndex < songs.length - 1) {
                 selectedSongIndex++;
+                shouldRedraw = true;
             }
 
             break;
 
-        case "q":
+        case "\r": // Enter
 
-            console.clear();
-            process.exit();
+            await playSong(
+                songs[selectedSongIndex]
+            );
+
+            break;
+
+
+        case "s":
+        case "S":
+
+            await stopSong();
+
+            break;
+
+case "q":
+case "Q":
+
+    await quitPlayer();
+
+    console.clear();
+    process.exit();
+
+    break;
 
         default:
             return;
     }
 
-    displaySongs(songs, selectedSongIndex);
+    if (shouldRedraw) {
+        displaySongs(
+            songs,
+            selectedSongIndex
+        );
+    }
 });
