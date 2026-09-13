@@ -3,8 +3,9 @@ const displaySongs = require("./ui");
 const {
     playSong,
     stopSong,
-    getCurrentSong,
-    quitPlayer
+    pauseSong,
+    resumeSong,
+    quitPlayer,
 } = require("./player");
 
 const songs = loadSongs();
@@ -51,6 +52,15 @@ process.stdin.on("data", async (key) => {
 
             break;
 
+        case "p":
+case "P":
+    await pauseSong();
+    break;
+
+case "r":
+case "R":
+    await resumeSong();
+    break;    
 
         case "s":
         case "S":

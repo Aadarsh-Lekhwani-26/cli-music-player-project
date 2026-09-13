@@ -72,9 +72,37 @@ async function quitPlayer() {
     }
 }
 
+async function pauseSong() {
+    try {
+        await mpvPlayer.pause();
+
+        console.log("\nPlayback Paused");
+    } catch (error) {
+        console.error(
+            "Pause Error:",
+            error.message
+        );
+    }
+}
+
+async function resumeSong() {
+    try {
+        await mpvPlayer.resume();
+
+        console.log("\nPlayback Resumed");
+    } catch (error) {
+        console.error(
+            "Resume Error:",
+            error.message
+        );
+    }
+}
+
 module.exports = {
     playSong,
     stopSong,
+    pauseSong,
+    resumeSong,
     quitPlayer,
     getCurrentSong,
 };
