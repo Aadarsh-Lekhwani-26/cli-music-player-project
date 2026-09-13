@@ -1,5 +1,7 @@
-function displaySongs(songs) {
-    console.log("\n=== SONG LIST ===\n");
+function displaySongs(songs, selectedSongIndex) {
+    console.clear();
+
+    console.log("=== NODE MUSIC PLAYER ===\n");
 
     if (songs.length === 0) {
         console.log("No songs found.");
@@ -7,10 +9,13 @@ function displaySongs(songs) {
     }
 
     songs.forEach((song, index) => {
-        console.log(`${index + 1}. ${song}`);
+        const prefix = index === selectedSongIndex ? ">" : " ";
+
+        console.log(`${prefix} ${song}`);
     });
 
-    console.log();
+    console.log("\nSelected Song:");
+    console.log(songs[selectedSongIndex]);
 }
 
 module.exports = displaySongs;

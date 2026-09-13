@@ -3,4 +3,6 @@ const displaySongs = require("./ui");
 
 const songs = loadSongs();
 
-displaySongs(songs);
+let selectedSongIndex = 0;
+
+displaySongs(songs, selectedSongIndex);
