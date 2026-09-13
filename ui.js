@@ -14,8 +14,10 @@ function displaySongs(songs, selectedSongIndex) {
         console.log(`${prefix} ${song}`);
     });
 
-    console.log("\nSelected Song:");
-    console.log(songs[selectedSongIndex]);
+    console.log("\nControls:");
+    console.log("↑ Move Up");
+    console.log("↓ Move Down");
+    console.log("Q Quit");
 }
 
 module.exports = displaySongs;
